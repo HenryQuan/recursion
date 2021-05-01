@@ -12,16 +12,30 @@ def all(list):
         pivot = minimum
         for i in range(length):
             curr = list[i]
-            if i == 0:
-                answer += subset(list)
-            elif curr <= minimum:
+            # less than current minimum
+            if i == 0 or curr <= minimum:
                 minimum = curr
-                # less than the first number but also a larger number before
-                # 4, 1, 3, 8 -> only 1 should go deeper but 3 shouldn't because 1 is before
                 answer += subset(list[i:])
         return answer
 
-def subset(list):
+def minimum(list):
+    print(list)
+    length = len(list)
+    if length == 0:
+        return
+    else:
+        m = list[0]
+        for i in range(length):
+            curr = list[i]
+            if curr < m:
+                minimum(list[i:])
+                m = curr
+            else:
+                larger = [x for x in list if x > list[0]]
+                minimum(larger)
+                return
+
+def subset(list, pivot):
     """
     Get all subsets of the first number
     """
@@ -32,22 +46,24 @@ def subset(list):
         if len(larger) > 0:
             minimum = larger[0]
             for i in range(len(larger)):
-                print(subset(larger[i:]))
+                # print(subset(larger[i:]))
                 curr = larger[i]
                 if i == 0 or curr < minimum:
-                    answer += [[head] + greater(larger[i:])]
+                    answer += [[head] + greater(larger[i:], curr)]
                     minimum = curr
+                # else:
+                #     answer += subset(list[i:])
+                #     return answer
         else:
             # nothing greater than head
             answer += [[head]]
     return answer
             
-def greater(list):
+def greater(list, pivot):
     """
     Get all numbers greater than the pivot which starts with the first number.
     It keeps increasing to the current max number.
     """
-    pivot = list[0]
     answer = [pivot]
     for i in range(len(list)):
         curr = list[i]
@@ -60,11 +76,11 @@ def greater(list):
 Testing
 """
 
-# print(subset([3,2,1]))
+print(minimum([2,1,3,5,10,6,4]))
 print(subset([2,1,5,3,4,10,8,6,7]))
-# [2, 5, 10], [2, 5, 8], [2, 5, 6, 7], [2, 3, 4, 10], [2, 3, 4, 8], [2, 3, 4, 6, 7]
-# print(all([2,1,5,3,4,10,8,6,7]))
 exit()
+# [2, 5, 10], [2, 5, 8], [2, 5, 6, 7], [2, 3, 4, 10], [2, 3, 4, 8], [2, 3, 4, 6, 7]
+print(all([2,1,5,3,4,10,8,6,7]))
 
 print(all([]))
 print(all([1]))

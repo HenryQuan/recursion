@@ -15,10 +15,10 @@ def all(list):
             if i == 0:
                 answer += subset(list)
             elif curr <= minimum:
-                    minimum = curr
-                    # less than the first number but also a larger number before
-                    # 4, 1, 3, 8 -> only 1 should go deeper but 3 shouldn't because 1 is before
-                    answer += subset(list[i:])
+                minimum = curr
+                # less than the first number but also a larger number before
+                # 4, 1, 3, 8 -> only 1 should go deeper but 3 shouldn't because 1 is before
+                answer += subset(list[i:])
         return answer
 
 def subset(list):
@@ -32,13 +32,15 @@ def subset(list):
         if len(larger) > 0:
             minimum = larger[0]
             for i in range(len(larger)):
+                print(subset(larger[i:]))
                 curr = larger[i]
                 if i == 0 or curr < minimum:
                     answer += [[head] + greater(larger[i:])]
                     minimum = curr
         else:
+            # nothing greater than head
             answer += [[head]]
-        return answer
+    return answer
             
 def greater(list):
     """
@@ -47,16 +49,22 @@ def greater(list):
     """
     pivot = list[0]
     answer = [pivot]
-    for x in list:
-        if x > pivot:
-            answer += [x]
-            pivot = x
+    for i in range(len(list)):
+        curr = list[i]
+        if curr > pivot:
+            answer += [curr]
+            pivot = curr
     return answer
 
-print(subset([3,2,1]))
+"""
+Testing
+"""
+
+# print(subset([3,2,1]))
 print(subset([2,1,5,3,4,10,8,6,7]))
 # [2, 5, 10], [2, 5, 8], [2, 5, 6, 7], [2, 3, 4, 10], [2, 3, 4, 8], [2, 3, 4, 6, 7]
-print(all([2,1,5,3,4,10,8,6,7]))
+# print(all([2,1,5,3,4,10,8,6,7]))
+exit()
 
 print(all([]))
 print(all([1]))

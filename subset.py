@@ -3,8 +3,8 @@
 
 def re(list):
     length = len(list)
-    if length < 2:
-        return [list]
+    if length < 1:
+        return [[]]
     else:
         answer = []
         extra = []
@@ -16,13 +16,14 @@ def re(list):
             if i == 0:
                 answer += [curr]
             else:
-                if curr <= first:
-                    # potential subsets, go deeper
-                    extra += re(list[i:])
-                elif curr > pivot:
+                if curr > pivot:
                     pivot = curr
-                    re(list[i:])
+                    # re(list[i:])
                     answer += [curr]
+                elif curr <= first and curr < list[i - 1]:
+                    # less than the first number but also a larger number before
+                    # 4, 1, 3, 8 -> only 1 should go deeper but 3 shouldn't because 1 is before
+                    extra += re(list[i:])
         return [answer] + extra
 
 print(re([]))
